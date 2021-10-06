@@ -45,7 +45,7 @@ export const header = () => {
     const displayResults = (resultSearch) => {
         const html = resultSearch.length > 0 ? resultSearch.join('') : "";
         ulResulSearch.innerHTML = html;
-        addEventLinkUser();
+        addEventLinkUser(); //link a usuario
     }
 
     // ------------------------------ Evento Cerrar Sesión-----------------------------------------------
@@ -53,7 +53,7 @@ export const header = () => {
     const btnSalir = header.querySelector('#logout');
     btnSalir.addEventListener('click', () => {
         signOut().then(() => {
-            document.querySelector('#div-body').classList.remove('bodyBackground');
+            document.querySelector('#div-body').classList.remove('bodyBackground');//background plomo 
             window.location.hash = '#/login';
         }).catch((error) => {
             alert(error)

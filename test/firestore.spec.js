@@ -68,7 +68,7 @@ describe('deletePostFs', () =>{
    it('it should delete posts', () =>{
        deletePostFs().then((postDoc)=>{
         expect(postDoc).toBe(undefined);
-        getAllPosts()
+        getAllPosts() //Se esta funcion es que esta en firebase, lo que hace es dar todo los la colecction de los posts 
        })
    })
 })
