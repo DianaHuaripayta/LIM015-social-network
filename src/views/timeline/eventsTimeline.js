@@ -2,7 +2,7 @@ import { sliderPopularPost } from '../../lib/animation.js';
 import { updatePost, getPost } from "../../db/firestore.js";
 import { loadAllPosts } from './addInfoTimeLine.js';
 import { allUsers } from './getDataFirebase.js';
-import { alerts } from '../../lib/alerts.js';
+import { alerts, alertProcess } from '../../lib/alerts.js';/* modified */
 import { addEventFormPost } from './eventsCrud.js'
 
 // ------------------------------ Evento Click para redireccionar al perfil de un usuario-----------
@@ -12,7 +12,7 @@ const addEventLinkUser = () => {
     allLinksUser.forEach(link => {
         link.addEventListener('click', (e) => {
             const idUser = e.target.dataset.id;
-            localStorage.setItem('idUserRedirecionar', idUser); //almacenar el id del usuario a redireccionar linea11(EVENTS PROFILE)
+            localStorage.setItem('idUserRedirecionar', idUser); //almacenar el id del usuario a redireccionar
             window.location.href = `#/profile/${idUser}`;
         })
     })
@@ -82,7 +82,9 @@ const addEventShowCategories = () => {
     //Entonces Cargamos los Post de acuerdo a la Categoria que se hizo Click o la Imagen
     const allCategoriesName = document.querySelectorAll('.categoryName');
     allCategoriesName.forEach(span => {
-        span.addEventListener('click', async(e) => {
+        span.addEventListener('click', (e) => {/* modified */
+            e.preventDefault;/* modified */
+            alertProcess(true);/* modified */
             const idSpanCategory = e.target.dataset.id;
             loadAllPosts(idSpanCategory, "all");
         })
@@ -94,10 +96,10 @@ const addEventShowCategories = () => {
 const addEventComments = async() => {
     const allBtnComments = document.querySelectorAll(".btn-comments");
     allBtnComments.forEach((btn) => {
-        let flag = false;//No le ha dado click al button
+        let flag = false;/* modified */
         btn.addEventListener("click", async(e) => {
             const idPost = e.target.dataset.id;
-            const infoUserAuth = JSON.parse(window.localStorage.getItem('infouser')); //linea 13 viewsComponenstTimeline obj
+            const infoUserAuth = JSON.parse(window.localStorage.getItem('infouser')); //linea 13 viewsComponenstTimeline /* modified */
             const footerComments = document.querySelector("#footer-comments-" + idPost); //elemento padre comentarios
             const allUsersPost = await allUsers().then((response) => response); //import de getDataFirebase linea 12 
 
@@ -114,7 +116,7 @@ const addEventComments = async() => {
                 const dataPost = await getPost(idPost).then((response) => response.data());
                 const arrayComments = dataPost.arrComments;
 
-                if (arrayComments.length > 0) {//Hay comentarios y los renderizo
+                if (arrayComments.length > 0) {/* modified */
                     arrayComments.forEach((element) => {
                         let arrayCommentsUser = element.split("--");
                         const userFriend = allUsersPost.find((element) => element.idUser == arrayCommentsUser[0]);
@@ -193,17 +195,16 @@ const changeNameFileImage = () => {
 
 
 // ------------------------------ Cargamos los Eventos Necesarios para la DOM TimeLine------------------
-const url = window.location.href;//obtiene toda mi url
-const path = url.split('#');//divide en dos partes /#/timeline
+const url = window.location.href;/* modified */
+const path = url.split('#');/* modified */
 
-const loadEventsDomTimeLine = () => { //se llama en route 
-    document.querySelector('#div-body').className = "bodyBackground";//color blanco gris
+const loadEventsDomTimeLine = () => {/* modified */
+    document.querySelector('#div-body').className = "bodyBackground";/* modified */
     addEventModalCreatePost();
     addEventFormPost();
     changeNameFileImage();
-    if (path[1] == '/timeline') {//otra parte /#/timeline
+    if (path[1] == '/timeline') {/* modified */
         sliderPopularPost(); //Para Popular Post
-        addEventShowCategories();
     }
 }
 
@@ -211,5 +212,6 @@ export {
     loadEventsDomTimeLine,
     addEventLinkUser,
     addEventLike,
-    addEventComments
+    addEventComments,/* modified */
+    addEventShowCategories/* modified */
 }
