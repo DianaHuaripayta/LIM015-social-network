@@ -1,5 +1,10 @@
-// Este es el punto de entrada de tu aplicacion
+/* eslint-disable no-undef */
+import { changeView } from './router/router.js'
 
-import { myFunction } from './lib/index.js';
+// función que permite mostrar las vistas del usario
+const init = () => {
+    changeView(window.location.hash);
+    window.addEventListener('hashchange', () => changeView(window.location.hash));
+};
 
-myFunction();
+window.addEventListener('load', init);
