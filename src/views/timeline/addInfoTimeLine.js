@@ -1,10 +1,10 @@
 import { getUser } from '../../db/firestore.js';
 import { loadViewModals } from '../modal/viewModals.js';
 import { getObjectPosts, allCategories, getTopPopularPosts } from './getDataFirebase.js';
-import { alerts } from '../../lib/alerts.js';
+import { alerts, alertProcess } from '../../lib/alerts.js';/* modified */
 import { addEventDeletePost, addEventEditPost } from './eventsCrud.js'
 import { createEmoji } from '../../lib/emoji.js';
-import { addEventLinkUser, addEventLike, addEventComments } from './eventsTimeline.js'
+import { addEventLinkUser, addEventLike, addEventComments, addEventShowCategories } from './eventsTimeline.js'/* modified */
 
 // ------------------------------ Renderizar Header con la Info User------------------------------------------------
 
@@ -31,7 +31,7 @@ const loadAllPosts = async(idCategory, idUser) => { //Extrae la data publica o p
     const containerPost = document.querySelector("#container-posts");
     containerPost.innerHTML = "";
     loadViewPost(dataPublic);
-
+    alertProcess(false);/* modified */
     if (totalPostsPrivate > 0 && idCategory != "all") {
         alerts('info', 'No se mostraran ' + totalPostsPrivate + ' por que son privados') //Alerta en las categorías 
     }
@@ -63,7 +63,6 @@ const loadViewPost = (dataPublic) => {
                                     <span id="span-date-${element.idPost}" class="post-date">${element.datePost}</span>
                                     <span class="span-public" id="publicPost-${element.idPost}">${element.publicPosts == "true"? `<i class="fas fa-globe-americas"></i>`: `<i class="fas fa-lock"></i>`} </span>
                                 </div>
-
                                 <div class="header-right">
                                     <div class="post-category">
                                         ${element.idUser == idUserAuth ? `<img class="btn btn-edit" width="22px" height="22px" data-id="${element.idPost}" src="../src/assets/images/svg/edit.png"><img class="btn btn-delete" data-id="${element.idPost}" src="../src/assets/images/svg/delete.png">`: ``}
@@ -71,12 +70,10 @@ const loadViewPost = (dataPublic) => {
                                     </div>          
                                 </div>
                             </div>
-
                             <div class="post-content"> <input type=hidden id="input-category-${element.idPost}" value="${element.idCategory}">
                                 <p class="content-paragraph" id="paragraph-post-${element.idPost}"> ${element.contentPost} </p>
                                 ${element.image == true? `<img id="image-post-${element.idPost}" src="${element.urlImage}" class="content-image" />`: `<img id="image-post-${element.idPost}"/>`}
                             </div>
-
                             <div class="post-footer footer">
                                 <div class="footer-reactions reactions">
                                     <img class="img-like likes" id="like-${element.idPost}" width="22px" height="22px" data-id="${element.idPost}"  src=" ${element.arrLikes.includes(idUserAuth)? "../src/assets/images/svg/like.png": "../src/assets/images/svg/notlike.png"}"  data-id="${element.idPost}"/>
@@ -105,7 +102,7 @@ const loadViewPost = (dataPublic) => {
 
 const loadViewCategory = async() => {
     const categories = document.querySelector('#categories');
-    const allCategoriesCourse = await allCategories().then(response => response);//revisar
+    const allCategoriesCourse = await allCategories().then(response => response);/* modified */
     allCategoriesCourse.forEach(element => {
         const figureCategory = document.createElement('figure');
         figureCategory.classList.add('category');
@@ -116,6 +113,7 @@ const loadViewCategory = async() => {
                                     </div>`
         categories.appendChild(figureCategory);
     });
+    addEventShowCategories();/* modified */
 }
 
 
