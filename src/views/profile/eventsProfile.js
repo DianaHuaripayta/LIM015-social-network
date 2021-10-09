@@ -8,14 +8,14 @@ import { addEventLinkUser } from '../timeline/eventsTimeline.js'
 
 // ------------------------ Carga la Info del Usuario (portada, profile) ---------------------------
 const loadInfoUser = async() => {
-    const idUserRedirect = window.localStorage.getItem('idUserRedirecionar'); //IdUser click en su nombre  EXTRAE del local
+    const idUserRedirect = window.localStorage.getItem('idUserRedirecionar'); //IdUser click en su nombre
     const infoUserProfile = await getUser(idUserRedirect).then(response => response.data());
     const avatarUser = document.querySelector("#avatar-user");
     const avatarName = document.querySelector("#avatar-name");
     const coverUser = document.querySelector("#img-cover-user")
     const avatarDescription = document.querySelector("#avatar-description");
-    avatarUser.src = infoUserProfile.photouser;//cambiar la ruta de la imagen 
-    avatarName.textContent = infoUserProfile.nameuser;//texto de name user
+    avatarUser.src = infoUserProfile.photouser;
+    avatarName.textContent = infoUserProfile.nameuser;
     avatarDescription.textContent = infoUserProfile.description;
     coverUser.src = infoUserProfile.photocover;
 };
@@ -23,7 +23,7 @@ const loadInfoUser = async() => {
 // ------------------------ Carga todos los Post del usuario (Luego de Hacer Click en un nombre) ---------------------------
 
 const loadPostUser = async() => {
-    const idUserRedirect = localStorage.getItem('idUserRedirecionar'); //esto viene de eventsTimeline linea 15
+    const idUserRedirect = localStorage.getItem('idUserRedirecionar'); //esto viene de eventsTimeline linea 28
     await loadAllPosts("all", idUserRedirect); //esto esta en addInfoTimeline.js Linea 24; es all porque no filtra por categorias
 };
 
