@@ -36,8 +36,9 @@ const loadViewModalForm = () => {/*Modal principal de crear post*/
 
                     <section class="textarea-group">
                         <textarea class="textarea-post" id="post-user" row="4" required></textarea>
+                        <section class="emoji-group" id="emoji-group"> </section>
                     </section>
-                    <section class="emoji-group" id="emoji-group"> </section>
+
                     <section class="reaction-post-group">
                         <section class="image-upload">
                             <label for="file-input">

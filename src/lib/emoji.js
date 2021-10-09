@@ -24,6 +24,7 @@ const createEmoji = () => {
         const element = emojiList[index];
         element.addEventListener('click', () => {
             insertEmoji(element.id);
+            emojiGroup.classList.remove('show-emojis');
         })
     }
     

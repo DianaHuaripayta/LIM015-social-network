@@ -3,7 +3,7 @@ import { updatePost, getPost } from "../../db/firestore.js";
 import { loadAllPosts } from './addInfoTimeLine.js';
 import { allUsers } from './getDataFirebase.js';
 import { alerts } from '../../lib/alerts.js';
-import { addEventFormPost, addEventDeletePost, addEventEditPost } from './eventsCrud.js'
+import { addEventFormPost } from './eventsCrud.js'
 
 // ------------------------------ Evento Click para redireccionar al perfil de un usuario-----------
 
@@ -14,7 +14,6 @@ const addEventLinkUser = () => {
             const idUser = e.target.dataset.id;
             localStorage.setItem('idUserRedirecionar', idUser); //almacenar el id del usuario a redireccionar linea11(EVENTS PROFILE)
             window.location.href = `#/profile/${idUser}`;
-            //window.location.reload();
         })
     })
 }
@@ -95,20 +94,27 @@ const addEventShowCategories = () => {
 const addEventComments = async() => {
     const allBtnComments = document.querySelectorAll(".btn-comments");
     allBtnComments.forEach((btn) => {
-        let flag = false;
+        let flag = false;//No le ha dado click al button
         btn.addEventListener("click", async(e) => {
             const idPost = e.target.dataset.id;
-            const infoUserAuth = JSON.parse(window.localStorage.getItem('infouser')); //linea 13 viewsComponenstTimeline
+            const infoUserAuth = JSON.parse(window.localStorage.getItem('infouser')); //linea 13 viewsComponenstTimeline obj
             const footerComments = document.querySelector("#footer-comments-" + idPost); //elemento padre comentarios
             const allUsersPost = await allUsers().then((response) => response); //import de getDataFirebase linea 12 
 
-            footerComments.style.display = "block"; //mostramos la seccion del footer Post
-
             if (flag == false) {
+                footerComments.innerHTML = `<div class="comments-box box">
+                                                <div class="box-profile profile">
+                                                    <img src="${infoUserAuth.photouser}" class="profile-pic">
+                                                </div>
+                                                <div class="box-bar bar">
+                                                    <input type="text" id="input-comment-${idPost}" placeholder="Escribe un comentario..." class="bar-input">
+                                                </div>
+                                                <button class="public-comment" id="btn-comment-${idPost}" type="button">Publicar</button>
+                                            </div>`;
                 const dataPost = await getPost(idPost).then((response) => response.data());
                 const arrayComments = dataPost.arrComments;
 
-                if (arrayComments.length > 0) {
+                if (arrayComments.length > 0) {//Hay comentarios y los renderizo
                     arrayComments.forEach((element) => {
                         let arrayCommentsUser = element.split("--");
                         const userFriend = allUsersPost.find((element) => element.idUser == arrayCommentsUser[0]);
@@ -116,12 +122,12 @@ const addEventComments = async() => {
                         footerComments.appendChild(boxCommentFriends);
                     });
                 }
-
+                footerComments.style.display = "block"; //mostramos la seccion del footer Post
                 addEventPostComment(idPost, arrayComments, infoUserAuth); //Linea 146, Evento Button Pubicar Comentario
                 flag = true;
             } else {
-                footerComments.style.display = "none";
                 footerComments.innerHTML = "";
+                footerComments.style.display = "none";
                 flag = false;
             }
         });
@@ -193,12 +199,7 @@ const path = url.split('#');//divide en dos partes /#/timeline
 const loadEventsDomTimeLine = () => { //se llama en route 
     document.querySelector('#div-body').className = "bodyBackground";//color blanco gris
     addEventModalCreatePost();
-    addEventLinkUser();
-    addEventLike();
-    addEventComments();
     addEventFormPost();
-    addEventDeletePost();
-    addEventEditPost();
     changeNameFileImage();
     if (path[1] == '/timeline') {//otra parte /#/timeline
         sliderPopularPost(); //Para Popular Post
