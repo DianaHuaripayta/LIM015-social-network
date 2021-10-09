@@ -106,12 +106,12 @@ describe('getCategory', () => {
 describe('getUser', () => {
   it('deberia darme el id de cada usuario', async () => {
     const users = await getAllUsers();
-    users.forEach((doc) => {
+    users.forEach(async(doc) => {
       if (doc.id === 'user3') {
-        getUser('user3', { nameUser: 'Yovana Velasquez Cruz' }).then(() => {
-          const result = doc.data();
-          expect(result.nameUser).toBe('Yovana Velasquez Cruz');
-        });
+        const doc = await getUser('user3', { nameUser: 'Yovana Velasquez Cruz' })
+        const result = doc.data();
+        expect(result.nameUser).toBe('Yovana Velasquez Cruz');
+        
       }
     });
   });

@@ -111,7 +111,7 @@ const loadViewPost = (dataPublic) => {
 
 const loadViewCategory = async() => {
     const categories = document.querySelector('#categories');
-    const allCategoriesCourse = await allCategories().then(response => response);
+    const allCategoriesCourse = await allCategories().then(response => response);//revisar
     allCategoriesCourse.forEach(element => {
         const figureCategory = document.createElement('figure');
         figureCategory.classList.add('category');

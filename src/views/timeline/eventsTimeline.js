@@ -12,7 +12,7 @@ const addEventLinkUser = () => {
     allLinksUser.forEach(link => {
         link.addEventListener('click', (e) => {
             const idUser = e.target.dataset.id;
-            localStorage.setItem('idUserRedirecionar', idUser); //almacenar el id del usuario a redireccionar
+            localStorage.setItem('idUserRedirecionar', idUser); //almacenar el id del usuario a redireccionar linea11(EVENTS PROFILE)
             window.location.href = `#/profile/${idUser}`;
             //window.location.reload();
         })
@@ -187,11 +187,11 @@ const changeNameFileImage = () => {
 
 
 // ------------------------------ Cargamos los Eventos Necesarios para la DOM TimeLine------------------
-const url = window.location.href;
-const path = url.split('#');
+const url = window.location.href;//obtiene toda mi url
+const path = url.split('#');//divide en dos partes /#/timeline
 
-const loadEventsDomTimeLine = () => {
-    document.querySelector('#div-body').className = "bodyBackground";
+const loadEventsDomTimeLine = () => { //se llama en route 
+    document.querySelector('#div-body').className = "bodyBackground";//color blanco gris
     addEventModalCreatePost();
     addEventLinkUser();
     addEventLike();
@@ -200,7 +200,7 @@ const loadEventsDomTimeLine = () => {
     addEventDeletePost();
     addEventEditPost();
     changeNameFileImage();
-    if (path[1] == '/timeline') {
+    if (path[1] == '/timeline') {//otra parte /#/timeline
         sliderPopularPost(); //Para Popular Post
         addEventShowCategories();
     }

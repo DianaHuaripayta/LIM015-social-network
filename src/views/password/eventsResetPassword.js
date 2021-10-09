@@ -7,7 +7,7 @@ const addEventResetPassword = () => {
     const emailReset = document.querySelector('#emailReset'); //input EMAIL
 
     btnResetPassword.addEventListener('click', () => {
-        if (emailReset.value !== "") { //valor adentro
+        if (emailReset.value !== "") { //valor adentro es decir que hay un valor
             resetPassword(emailReset).then(() => { //reutilizar PROMESA
                 msgSendEmail.innerHTML = 'Se envió el correo satisfactoriamente, favor de verificar :)';
             }).catch((err) => {
